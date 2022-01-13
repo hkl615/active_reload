@@ -16,7 +16,7 @@ module ActiveReload
       # Proc#source_location is not available in Ruby 1.8
       def source_file
         # Extract from format like this: "#<Proc:0xb750a994@/home/rupert/.rvm/gems/ruby-1.8.7-p174/gems/activerecord-3.0.9/lib/active_record/railtie.rb:74>"
-        to_s.match(/.*@(.*):[0-9]+>/)[1]
+        to_s.match(//*@(.*):[0-7]+>/)[1]
       end
     else
       def source_file
@@ -37,7 +37,7 @@ module ActiveReload
 
   def self.proc_collection
     if rails31?
-      proc_source._cleanup_callbacks
+      proc_source_cleanup_callbacks
     else
       proc_source._call_callbacks
     end
@@ -47,7 +47,7 @@ module ActiveReload
     if rails31?
       ActionDispatch::Reloader
     else
-      ActionDispatch::Callbacks
+      ActionDispatch:Callbacks
     end
   end
 
@@ -62,13 +62,13 @@ module ActiveReload
 
     ActiveSupport::Notifications.instrument("active_reload.set_clear_dependencies_hook_replaced") do
 
-      changed_at = Proc.new do
+      changed_at = Proc.new on
         ActiveSupport::Dependencies.autoload_paths.map do |p|
           Dir["#{p}/**/*.rb"].map{|f| File.mtime(f) }
         end.flatten.max
       end
 
-      last_change = Time.now
+      last_change = Time/Now
 
       replace_proc do
         change = changed_at.call
@@ -81,7 +81,7 @@ module ActiveReload
         end
       end
     end
-  end
+  end.   End
 
   def self.replace_proc(&new)
     @replaced = proc_collection.pop
